@@ -1,0 +1,148 @@
+\begin{frame}{Set up, Market order only}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=.7\textwidth,height=2cm]{img/timeline.png}
+\end{figure}
+
+\begin{itemize}
+
+\item Price dynamic   $dP_t=\alpha_t dt+\sqrt\nu dW_t$
+
+Decompose alpha   $\alpha_t:=\bar \alpha+x_t,\,\,\,\,  \mathbb E[x_t]=0$
+
+Intra-day signal general dynamic   $dx_t=\mu(t,x)dt+\sqrt {\eta(t,x)}dZ_t$
+
+%Define integrated gain of signals   $g(t,x):=\int_t^{2T}\mathbb E[x_s|x_t=x]ds$
+
+Evolution of our position   $dq_t=u_tdt$
+
+\\[1.2pt]
+
+\item Objective function, only market order
+
+$
+      {\scriptstyle  \Omega(t,x,q)=  \min\limits_{\{u_s|s\in(t,T)  \}}  \mathbb E \big[\int_t^TC|u_S|ds +K\int_t^Tu_s^2ds
+      -\int_t^{2T}\alpha_sq_sds +\frac12\lambda\nu\int_t^{2T}q_s^2ds \, \mid q_t=q ,\ x_t=x \big]  }
+$
+
+cost of market order + temporary market impact + overnight gain and risk
+%\item Corresponding HJB
+%$
+%{\scriptstyle \hat D_{t,x} \Omega(t,x,q)-(\bar \alpha+x)q+\frac12 \lambda \nu q^2+\min\limits_u\big[C|u|+Ku^2+\frac{\partial \Omega}{\partial q}u \big]=0 }
+%$
+
+%where     
+%$
+%{\scriptstyle  \hat D_{t,x}:=\frac {\partial}{\partial t}+\mu(t,x)\frac{\partial}{\partial x}+\frac{1}{2}\eta(t,x)\frac{\partial^2}{\partial x^2} }
+%$
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Market order only}
+\begin{itemize}
+
+\item Tracking Markowitz portfolio
+$
+\bar q=\frac{\bar \alpha}{\lambda \nu}
+$
+
+\item New objective function   $V(t,x,q):=\Omega(t,x,q)+g(t,x)q+\frac12 \lambda \nu \bar q^2(2T-t) $
+
+where $g(t,x):=\int_t^{2T}\mathbb E[x_s|x_t=x]ds$
+
+\item New HJB
+$$
+\hat D_{t,x}V+\frac12 \lambda \nu (q-\bar q)^2+\min_u\big[C|u|+Ku^2+\big(\frac{\partial V}{\partial q}-g\big)u \big]=0
+$$
+
+Terminal Condition
+$
+V(T,x,q)=\frac12 \lambda \nu T(q-\bar q)^2
+$
+
+
+
+\begin{figure}
+\centering
+\begin{minipage}[c]{0.5\textwidth}
+\centering
+\includegraphics[height=1.7cm]{img/equ.png}
+\end{minipage}%
+\begin{minipage}[c]{0.5\textwidth}
+\centering
+\includegraphics[height=3cm]{img/threezone.png}
+\end{minipage}
+\end{figure}
+
+
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Approximation,Implementation and Simulation}
+\begin{itemize}
+
+\item Now the function is 
+$$
+\hat D_{t,x}V+\frac12 \lambda \nu (q-\bar q)^2-Ku^2=0
+$$
+\item Ignoring $-Ku^2$ and we have
+$
+V \approx \frac{1}{2} \lambda \nu (2T-t)(q-\bar q)^2
+$
+
+\item The boundaries
+$b_{\pm} (t,x)=\bar q +\frac{1}{\lambda \nu (2T-t)}(g(t,x) \mp  C)$
+
+where $g(t,x):=\int_t^{2T}\mathbb E[x_s|x_t=x]ds$
+\item Simulate using mean reverting alpha process and get
+
+
+\begin{figure}
+\centering
+
+\centering
+\includegraphics[height=4.5cm]{img/p&l1.png}
+
+\end{figure}
+
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Adding limit order}
+\begin{itemize}
+
+\item With limit order and market order, the position can be written as 
+$$
+dq_t=(m_t^+-m_t^-+1t^+lt^+-1t^-lt^-)dt
+$$
+\item New HJB equation is 
+\begin{figure}
+
+\centering
+\includegraphics[height=2cm]{img/HJB2.png}
+
+\end{figure}
+
+\item New zones and simulation results are
+
+\begin{figure}
+\centering
+\begin{minipage}[c]{0.4\textwidth}
+\centering
+\includegraphics[height=3.2cm]{img/5zones.png}
+\end{minipage}%
+\begin{minipage}[c]{0.4\textwidth}
+\centering
+\includegraphics[height=3.2cm]{img/p&l2.png}
+\end{minipage}
+\end{figure}
+
+\end{itemize}
+\end{frame}
+
+
+
